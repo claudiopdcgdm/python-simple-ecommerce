@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block 'content' %}
+
+<div class="row">
+
+    <div class="col-lg">
+        {% if request.user.is_authenticated %}
+        <h1>Atualizar dados</h1>
+        {%else%}
+        <h1>Cadastro</h1>
+        {% endif %}
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{perfilform|crispy}}
+            <div class="row">
+                <div class="col-lg">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">Register</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock 'content' %}

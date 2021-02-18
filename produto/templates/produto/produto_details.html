@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load omfilters %}
+
+{% block 'title' %}Detalhes|{{produto.name}} {% endblock 'title' %}
+{% block 'content' %}
+<div class="row">
+    <div class="col-lg">
+        <div class="row no-gutters">
+            <div class="col-lg-12">
+                {% if produto.image %}
+                <img class="img-fluid" src="{{produto.image.url}}" alt="{{produto.name}} ">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-lg">
+        <div class="mt-4 mt-lg-0">
+            <h1 class="h2"> {{produto.name}} </h1>
+            <p class="lead">{{produto.cut_description}} </p>
+            <p class="lead">
+                {% if produto.preco_marketing_promo and produto.preco_marketing_promo != produto.preco_marketing %}
+                <span id="variation-preco-promocional" class="lead product-price">
+                    {{produto.preco_marketing_promo|filter_price}}
+                </span>
+                <span id="variation-preco" class="lead product-old-price">
+                    {{produto.preco_marketing|filter_price}}
+                </span>
+                {% else %}
+                <span id="variation-preco" class="lead product-price">{{produto.preco_marketing|filter_price}} </span>
+                {% endif %}
+            </p>
+
+            <form action=" {% url 'produto:produtoAddToCar' %} " id="form-add-to-cart">
+                <div class="form-group">
+                    {% if produto.variacao_set.all %}
+                    <select id="select-variacoes" name="vid" class="form-control form-control-lg">
+                        {% for variacao in produto.variacao_set.all %}
+
+                        {% if variacao.preco_marketing %}
+                        <option data-preco=" {{variacao.preco|filter_price}} "
+                            data-preco-promocional="{{variacao.preco_marketing|filter_price}} "
+                            value=" {{variacao.id}} ">
+                            {{variacao.nome}}
+                        </option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% endif %}
+                </div>
+
+                <div class="text-left">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        Adicionar ao carrinho
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="mt-5 mb-5">
+            <h2 class="text-center">{{produto.name}} </h2>
+            {{produto.long_description|linebreaks}}
+        </div>
+    </div>
+</div>
+
+
+{% endblock 'content' %}
