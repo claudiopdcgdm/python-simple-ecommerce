@@ -1,1 +1,1 @@
-web: gunicorn setup.wsgi
+web: gunicorn loja.wsgi
