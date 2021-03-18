@@ -105,6 +105,7 @@ class Pagar(View):
                 return render(self.request, self.template_name)
 
             pedido_id = self.salvarPedido('C', 'CC')
+
             if pedido_id:
                 messages.success(
                     self.request, 'Pedido aprovado, obrigado pela compra')
@@ -170,11 +171,6 @@ class Pagar(View):
                         for aprovado. Obrigado!!!'
                 )
                 return redirect('pedido:detalhePedido', pk=pedido_id)
-            else:
-                messages.success(
-                    self.request, f'Erro ao inserir dados na api'
-                )
-                return redirect('produto:lista')
 
             messages.error(
                 self.request,
@@ -231,23 +227,27 @@ class Pagar(View):
         str_dt_pedido = pedido_db.create_at.strftime('%Y-%m-%dT%H:%M:%S')
         str_dt_entrega = pedido_db.dt_entrega.strftime('%Y-%m-%dT%H:%M:%S')
 
-        # print(pedido_db)
+        """
+        So grava na api pedidos cujo o modo de pagamento
+        seja boleto parcelado (BP)
+        """
 
-        data = {
-            "id": pedido_db.id,
-            "code": pedido_db.id,
-            "create_at": str_dt_pedido,
-            "deadline": str_dt_entrega,
-            "total": pedido_db.total,
-            "status": pedido_db.status,
-            "payment": pedido_db.modo_pagto,
-            "client": pedido_db.usuario.id
-        }
+        if modoPagto == 'BP':
+            data = {
+                "id": pedido_db.id,
+                "code": pedido_db.id,
+                "create_at": str_dt_pedido,
+                "deadline": str_dt_entrega,
+                "total": pedido_db.total,
+                "status": pedido_db.status,
+                "payment": pedido_db.modo_pagto,
+                "client": pedido_db.usuario.id
+            }
 
-        # print(data.get('client'))
-        # # instancia da classe Api
-        api = Api()
-        return_api = api.isPostPedido(data)
+            # print(data.get('client'))
+            # # instancia da classe Api
+            api = Api()
+            return_api = api.isPostPedido(data)
 
         return pedido.id
 
