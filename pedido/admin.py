@@ -8,6 +8,8 @@ class ItemPedidoInline(admin.TabularInline):
 
 
 class PedidoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'usuario', 'total', 'qtd_total', 'status')
+    readonly_fields = ('create_at', 'dt_entrega')
     inlines = [
         ItemPedidoInline
     ]

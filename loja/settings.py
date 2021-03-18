@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-import django_heroku
 from pathlib import Path
 import os
+import django_heroku
 from django.contrib.messages import constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'pedido',
     'perfil',
     'crispy_forms',
-
+    'mathfilters',
     'debug_toolbar',
 ]
 
@@ -167,5 +167,6 @@ INTERNAL_IPS = [
     '127.0.0.1',
     # ...
 ]
-# Configure Django App for Heroku.
+
+
 django_heroku.settings(locals())

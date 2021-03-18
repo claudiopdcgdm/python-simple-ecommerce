@@ -1,10 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from datetime import datetime, timedelta
 
 
 class Pedido(models.Model):
+
+    def deadline():
+        current_date = timezone.now()
+        delivery_date = current_date + timedelta(days=7)
+        return delivery_date
+
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    create_at = models.DateTimeField(default=timezone.now)
+    dt_entrega = models.DateTimeField(default=deadline())
     total = models.FloatField()
+    qtd_total = models.PositiveIntegerField()
     status = models.CharField(
         default='C',
         max_length=1,
@@ -15,6 +26,17 @@ class Pedido(models.Model):
             ('P', 'Pendente'),
             ('E', 'Enviado'),
             ('F', 'Finalizado'),
+        )
+    )
+    modo_pagto = models.CharField(
+        max_length=2,
+        default='CC',
+        choices=(
+                ('CC', 'Cartão Credito'),
+                ('BV', 'Boleto a Vista'),
+                ('BP', 'Boleto Parcelado'),
+                ('CD', 'Cartão Debito'),
+                ('VA', 'Vale Troca'),
         )
     )
 

@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+
+{% load omfilters %}
+{% load static %}
+{% load mathfilters %}
+
+
+{% block 'content' %}
+
+<body class="bg-light">
+
+    <div class="container">
+        <!-- carrinho lateral -->
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Seu Carrinho</span>
+                    <span class="badge badge-secondary badge-pill">{{request.session.carrinho|cart_qtd_total}}
+                    </span>
+                </h4>
+                <ul class="list-group mb-3">
+
+                    {% for item in request.session.carrinho.values %}
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Produto</h6>
+                            <small class="text-muted">{{item.produto_nome}}</small>
+                        </div>
+                        <span class="text-muted">
+                            {% if item.preco_unitario_promocional %}
+                            {{item.preco_unitario_promocional|filter_price}}
+                            {% else %}
+                            {{item.preco_unitario|filter_price}}
+                            {% endif %}
+                        </span>
+                    </li>
+                    {%endfor%}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (R$)</span>
+                        <strong>{{request.session.carrinho|cart_totals|filter_price}}</strong>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-8 order-md-1">
+                <form class="needs-validation" action="" method="POST" novalidate>
+                    {% csrf_token %}
+                    <h4 class="mb-3">Pagamento</h4>
+                    {{pedido.usuario}}
+                    <div id="accordion"></div>
+
+
+                    <div class="d-block my-3">
+                        <!-- cartão credito -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="custom-control custom-radio">
+                                    <input id="cc" name="formapagamento" type="radio" class="custom-control-input"
+                                        checked required data-toggle="collapse" data-target="#cartaocredito" value='cc'>
+                                    <label class="custom-control-label" for="cc">Cartão de Crédio</label>
+                                </div>
+                            </div>
+                            <div id="cartaocredito" class="collapse show" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row ">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="cc-name">Nome</label>
+                                            <input type="text" class="form-control" id="cc-name" name="nome_cartao_cc"
+                                                required>
+
+                                            <div class="invalid-feedback">
+                                                Nome do titular obrigatorio
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="cc-number">Numero</label>
+                                            <input type="text" class="form-control" id="cc-number"
+                                                name="numero_cartao_cc" required>
+                                            <div class="invalid-feedback">
+                                                Numero do Cartão obrigatorio
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label for="cc-expiration">Data de validade</label>
+                                            <input type="text" class="form-control" id="cc-expiration"
+                                                name="data_validade_cc" name="data_validade" required>
+                                            <div class="invalid-feedback">
+                                                Data de vencimento obrigatorio
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="cc-expiration">CVV</label>
+                                            <input type="text" class="form-control" id="cc-cvv" name="cvv_cc" required>
+                                            <div class="invalid-feedback">
+                                                Codigo de segurança obrigatorio
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- cartão debito -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="custom-control custom-radio">
+                                    <input id="cd" name="formapagamento" type="radio" class="custom-control-input"
+                                        required data-toggle="collapse" data-target="#cartaodebito" value='cd'>
+                                    <label class="custom-control-label" for="cd">Cartão de Débito</label>
+                                </div>
+                            </div>
+                            <div id="cartaodebito" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row ">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="cc-name">Nome</label>
+                                            <input type="text" class="form-control" id="cc-name" name="nome_cartao_cd"
+                                                required>
+                                            <div class="invalid-feedback">
+                                                Nome do titular obrigatorio
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="cc-number">Numero</label>
+                                            <input type="text" class="form-control" id="cc-number"
+                                                name="numero_cartao_cd" required>
+                                            <div class="invalid-feedback">
+                                                Numero do Cartão obrigatorio
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label for="cc-expiration">Data de validade</label>
+                                            <input type="text" class="form-control" id="cc-expiration"
+                                                name="data_validade_cd" name="data_validade_cd" required>
+                                            <div class="invalid-feedback">
+                                                Data de vencimento obrigatorio
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="cc-expiration">Senha</label>
+                                            <input type="password" class="form-control" id="cc-cvv" name="senha_cd"
+                                                required>
+                                            <div class="invalid-feedback">
+                                                Senha obrigatorio
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Boleto normal -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="custom-control custom-radio">
+                                    <input id="bo" name="formapagamento" type="radio" class="custom-control-input"
+                                        required data-toggle="collapse" data-target="#boleto" value='bo'>
+                                    <label class="custom-control-label" for="bo">Boleto</label>
+                                </div>
+                            </div>
+                            <div id="boleto" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row ">
+                                        <div class="col-md-6 mb-3">
+                                            <small class="text-muted">Pode Levar ate 48 horas para aprovação</small>
+                                            <small class="text-muted">Mas não se preocupe. Avisaremos</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Boleto parcelado -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="custom-control custom-radio">
+                                    <input id="bp" name="formapagamento" type="radio" class="custom-control-input"
+                                        required data-toggle="collapse" data-target="#boletoparcelado" value='bp'>
+                                    <label class="custom-control-label" for="bp">Boleto Parcelado</label>
+                                </div>
+                            </div>
+
+                            <div id="boletoparcelado" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="row ">
+                                        <div class="col-md-6 mb-3">
+                                            <small class="text-muted">Nota: Seus dados serão pré-análisados</small>
+
+                                            <div class="custom-control custom-radio">
+                                                <input id="duas" name="parcelas" type="radio"
+                                                    class="custom-control-input" checked required>
+                                                {%with numerator=request.session.carrinho|cart_totals denominator=2%}
+                                                <label class="custom-control-label" for="duas">
+                                                    2x
+                                                    {{numerator|div:denominator|filter_price}}
+                                                </label>
+                                                {%endwith%}
+                                            </div>
+
+                                            <div class="custom-control custom-radio">
+                                                <input id="tres" name="parcelas" type="radio"
+                                                    class="custom-control-input" required>
+                                                {%with numerator=request.session.carrinho|cart_totals denominator=3%}
+                                                <label class="custom-control-label" for="tres">
+                                                    3x
+                                                    {{numerator|div:denominator|filter_price}}
+                                                </label>
+                                                {%endwith%}
+                                            </div>
+
+                                            <div class="custom-control custom-radio">
+                                                <input id="quatro" name="parcelas" type="radio"
+                                                    class="custom-control-input" required>
+                                                {%with numerator=request.session.carrinho|cart_totals denominator=4%}
+                                                <label class="custom-control-label" for="quatro">
+                                                    4x
+                                                    {{numerator|div:denominator|filter_price}}
+                                                </label>
+                                                {%endwith%}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <!-- close accordion -->
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Finalizar Compra</button>
+
+
+        </form>
+    </div>
+    </div>
+    </div>
+</body>
+{% endblock 'content' %}

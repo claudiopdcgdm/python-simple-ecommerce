@@ -7,6 +7,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib import messages
 from .models import Produto, Variacao
+from perfil.models import Perfil
 
 
 class ProdutoList(ListView):
@@ -162,4 +163,28 @@ class Cart(View):
 
 class Resumo(View):
     def get(self, *args, **kwargs):
-        return HttpResponse('Pagina  Finalizar')
+        if not self.request.user.is_authenticated:
+            return redirect('perfil:insert')
+
+        perfil = Perfil.objects.filter(usuario=self.request.user).exists()
+
+        if not perfil:
+            messages.error(
+                self.request,
+                'Usuário sem perfil.'
+            )
+            return redirect('perfil:insert')
+
+        if not self.request.session.get('carrinho'):
+            messages.error(
+                self.request,
+                'Carrinho vazio.'
+            )
+            return redirect('produto:lista')
+
+        contexto = {
+            'usuario': self.request.user,
+            'carrinho': self.request.session['carrinho'],
+        }
+
+        return render(self.request, 'produto/resumodacompra.html', contexto)

@@ -3,6 +3,14 @@
 {% load crispy_forms_tags %}
 
 {% block 'content' %}
-{{userform|crispy}}
-{{perfilform|crispy}}
+<form action="" method="POST">
+    {% csrf_token %}
+    {{userform|crispy}}
+    {{perfilform|crispy}}
+    <div class="row">
+        <div class="col-lg">
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Salvar</button>
+        </div>
+    </div>
+</form>
 {% endblock 'content' %}

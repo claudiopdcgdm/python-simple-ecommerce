@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+
+{% block 'content' %}
+<main role="main" class="container">
+    <div class="jumbotron">
+        <h1>Obrigado por comprar conosco</h1>
+        <p class="lead">Segue dados do seu pedido!!!</p>
+    </div>
+    <div class="jumbotron">
+        <div class="row">
+            <div class="col-lg">
+                <p class="lead"> <strong> Detalhes do pedido</strong></p>
+                <h6><strong>Nome:</strong> {{pedido.usuario.get_full_name}} - <strong>CPF:</strong>
+                    {{pedido.usuario.perfil.cpf}} </h6>
+                <hr>
+                <p class="lead">Dados de endereço(Entrega)</p>
+                <dl class="row">
+                    <dt class="col-lg-2">Endereço:</dt>
+                    <dd class="col-lg-4">{{ pedido.usuario.perfil.endereco }}</dd>
+                    <dt class="col-lg-2">Número:</dt>
+                    <dd class="col-lg-4">{{ pedido.usuario.perfil.numero }}</dd>
+
+                    <dt class="col-lg-2">Complemento:</dt>
+                    <dd class="col-lg-4">{{ pedido.usuario.perfil.complemento }}</dd>
+                    <dt class="col-lg-2">Nascimento:</dt>
+                    <dd class="col-lg-4">{{ pedido.usuario.perfil.bairro }}</dd>
+
+                    <dt class="col-lg-2">Cidade:</dt>
+                    <dd class="col-lg-4">{{ pedido.usuario.perfil.cidade }}</dd>
+                    <dt class="col-lg-2">Estado:</dt>
+                    <dd class="col-lg-4">{{ pedido.usuario.perfil.estado }}</dd>
+
+                    <dt class="col-lg-2">CEP:</dt>
+                    <dd class="col-lg-4">{{ pedido.usuario.perfil.cep }}</dd>
+                </dl>
+                <hr>
+                <p class="lead">Pedido</p>
+                <dl class="row">
+                    <dt class="col-lg-2">Pedido:</dt>
+                    <dd class="col-lg-4">{{ pedido.id }}</dd>
+                    <dt class="col-lg-2">Total:</dt>
+                    <dd class="col-lg-4">{{ pedido.total }}</dd>
+
+                    <dt class="col-lg-2">Status:</dt>
+                    <dd class="col-lg-4">{{ pedido.status }}</dd>
+                    <dt class="col-lg-2">Quantidade:</dt>
+                    <dd class="col-lg-4">{{ pedido.qtd_total }}</dd>
+                </dl>
+                <hr>
+                <!-- {% for endereco in pedido.client.endereco.all %}
+                                <td>{{endereco.city}} </td>
+                                {% endfor %} -->
+
+                {% for item in itens %}
+
+                <dl class="row">
+                    <dt class="col-lg-2">Produto:</dt>
+                    <dd class="col-lg-4">{{item.produto}}</dd>
+                    <dt class="col-lg-2">Quantidade:</dt>
+                    <dd class="col-lg-4">{{ item.quantidade}}</dd>
+                    <dt class="col-lg-2">Preco:</dt>
+                    <dd class="col-lg-4">{{ item.preco }}</dd>
+                    <dt class="col-lg-2">Imagem:</dt>
+                    <dd class="col-lg-4">
+                        <img class="img-thumbnail" style="width: 150; height: 150px;" src="/media/{{item.imagem}} "
+                            alt="{{item.produto}}" />
+                    </dd>
+                </dl>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</main>
+{% endblock 'content' %}

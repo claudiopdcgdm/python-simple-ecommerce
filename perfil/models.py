@@ -7,7 +7,8 @@ import re
 
 class Perfil(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
-    idade = models.IntegerField()
+    idade = models.PositiveIntegerField()
+    fone = models.CharField(max_length=11)
     data_nascimento = models.DateField()
     cpf = models.CharField(
         max_length=11, help_text='Somente numeros', unique=True)
@@ -50,6 +51,7 @@ class Perfil(models.Model):
             ('TO', 'Tocantins'),
         )
     )
+    end_entrega = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = ("Perfil")
