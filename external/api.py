@@ -1,12 +1,3 @@
-# self.data_api = {
-#     "code": "33333-TESTE",
-#             "create_at": "2021-06-16T16:22:57-03:00",
-#             "deadline": "2021-06-16T16:22:57-03:00",
-#             "total": 97.03,
-#             "status": "A",
-#             "payment": "BP",
-#             "client": "200"
-# }
 
 import requests
 from pprint import pprint
@@ -17,7 +8,7 @@ print = pprint
 class Api():
 
     def isPostPedido(self, data):
-        url = 'http://127.0.0.1:8000/api/apipedidos/'
+        url = 'https://claudiomorais.herokuapp.com/api/apipedidos/'
 
         response = requests.post(url=url, json=data)
 
@@ -36,7 +27,7 @@ class Api():
             # print(f'Reason - {response.content}')
 
     def isPostEndereco(self, data):
-        url = 'http://127.0.0.1:8000/api/apiendereco/'
+        url = 'https://claudiomorais.herokuapp.com/api/apiendereco/'
 
         response = requests.post(url=url, json=data)
 
@@ -57,7 +48,7 @@ class Api():
 
     def isPostCliente(self, data):
         # print(data)
-        url = 'http://127.0.0.1:8000/api/apiclientes/'
+        url = 'https://claudiomorais.herokuapp.com/api/apiclientes/'
 
         response = requests.post(url=url, json=data)
 
@@ -77,7 +68,7 @@ class Api():
 
     def isPutCliente(self, data, uid):
 
-        url = f'http://127.0.0.1:8000/api/apiclientes/{uid}/?format=json'
+        url = f'https://claudiomorais.herokuapp.com/api/apiclientes/{uid}/?format=json'
 
         response = requests.put(url=url, json=data)
 
@@ -96,7 +87,7 @@ class Api():
             # print(f'Reason - {response.content}')
 
     def isGetCliente(self):
-        url = 'http://127.0.0.1:8000/api/apiclientes/'
+        url = 'https://claudiomorais.herokuapp.com/api/apiclientes/'
         # data = {}
         response = requests.get(url=url)
 
@@ -116,7 +107,7 @@ class Api():
             # print(f'Reason - {response.content}')
 
     def isGetEndereco(self):
-        url = 'http://127.0.0.1:8000/api/apiendereco/'
+        url = 'https://claudiomorais.herokuapp.com/api/apiendereco/'
         # data = {}
         response = requests.get(url=url)
 
@@ -136,7 +127,7 @@ class Api():
             # print(f'Reason - {response.content}')
 
     def isDeleteCliente(self, uid):
-        url = f'http://127.0.0.1:8000/api/apiclientes/{uid}/?format=json'
+        url = f'https://claudiomorais.herokuapp.com/api/apiclientes/{uid}/?format=json'
 
         response = requests.delete(url=url)
 

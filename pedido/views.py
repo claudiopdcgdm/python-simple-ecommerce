@@ -169,8 +169,13 @@ class Pagar(View):
                     self.request, f'Pedido efetuado, Informaremos quando seu pedido \
                         for aprovado. Obrigado!!!'
                 )
-                # return redirect('produto:lista')
                 return redirect('pedido:detalhePedido', pk=pedido_id)
+            else:
+                messages.success(
+                    self.request, f'Erro ao inserir dados na api'
+                )
+                return redirect('produto:lista')
+
             messages.error(
                 self.request,
                 'Erro ao salvar o pedido, Pedido não efetuado!!!'
@@ -221,12 +226,12 @@ class Pagar(View):
             ]
         )
 
-        # atualiza dados da api 'http://127.0.0.1:8000/api/apipedidos/'
+        # atualiza dados da api'
         pedido_db = Pedido.objects.filter(id=pedido.id).first()
         str_dt_pedido = pedido_db.create_at.strftime('%Y-%m-%dT%H:%M:%S')
         str_dt_entrega = pedido_db.dt_entrega.strftime('%Y-%m-%dT%H:%M:%S')
 
-        print(pedido_db)
+        # print(pedido_db)
 
         data = {
             "id": pedido_db.id,
@@ -242,7 +247,7 @@ class Pagar(View):
         # print(data.get('client'))
         # # instancia da classe Api
         api = Api()
-        api.isPostPedido(data)
+        return_api = api.isPostPedido(data)
 
         return pedido.id
 
