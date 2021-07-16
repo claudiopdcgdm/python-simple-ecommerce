@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-import django_heroku
+#import django_heroku
 from django.contrib.messages import constants
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,9 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '=0)b%lv+c7p4+zd*%&rc%t_74v^zobgpd@u*-p(k#q-4$i+m!w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -162,7 +162,7 @@ INTERNAL_IPS = [
 ]
 
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
 
 try:
     from loja.local_settings import *
